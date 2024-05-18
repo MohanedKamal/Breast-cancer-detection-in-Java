@@ -1,0 +1,47 @@
+
+package colon.cancer;
+
+
+public class Test extends dataset 
+{
+    public String [][]test;
+    private int counter=-1;
+
+    public Test()
+    {
+        test=new String[62][202];
+    }
+
+    public final int getCounter() {
+        return counter;
+    }
+
+    public final void setCounter(int counter) {
+        this.counter = counter;
+    }
+    
+    
+    //test
+    public void dvide_data()
+    {
+        test=new String [30][202];
+        
+        for(int i=32;i<62;i++)
+        {
+            if(i>=32){
+                counter++;
+            for(int j=0;j<202;j++)
+            {
+               test[counter][j]=myArray[i][j];   
+            }
+            
+    }
+        }
+    }
+
+    
+    
+
+    
+   
+}

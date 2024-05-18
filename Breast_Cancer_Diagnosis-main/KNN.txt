@@ -1,0 +1,72 @@
+
+
+package colon.cancer;
+
+import java.util.Arrays;
+
+public class Knn 
+
+{
+    public Train t = new Train();
+    public Test t2=new Test();
+    public String [][] train2=new String [32][202];
+    public String [][] test2=new String [30][202];
+    public static double counter=0.0;
+    public double accuracy=0.0;
+    public double sum1=0.0;
+    public double sum2=0.0;
+    public double total=0.0;
+    public double result=0.0;
+    
+    public Knn()
+    {
+        t.dvide_data();
+        train2=t.train;
+        t2.dvide_data();
+        test2=t2.test;
+    }
+    
+     public void calc()
+     {
+         double maximum_distance=1000000000.0;
+           int current_row=0;
+           //testing
+           for (int k = 0; k < 30; k++) {
+               //training
+           for(int i=0;i<32;i++)
+           {
+               //columns
+               for (int j = 0; j < 201; j++) {
+               sum1+=Double.parseDouble(train2[i][j]);
+               sum2+=Double.parseDouble(test2[k][j]);
+               }
+                total = Math.pow((sum1-sum2),2.0);   
+                result=Math.sqrt(total);
+                if(result>maximum_distance)
+                {
+                    maximum_distance=result;
+                    current_row=i;
+                }
+            }
+            if(test2[k][201].equals(train2[current_row][201]))
+            {
+                counter++;
+            }
+           }                         
+            //System.out.println("the accuracy of knn classifier is");   
+           accuracy=(counter/30)*100;
+           System.out.println(accuracy);
+      } 
+     
+    public void show()
+    {
+      for(int i=0;i<test2.length;i++)
+      {
+          for(int j=0;j<202;j++)
+          {
+            System.out.println(test2[i][j]);
+               
+          }
+      }        
+    }
+}

@@ -1,0 +1,171 @@
+
+package colon.cancer;
+
+import java.util.Vector;
+
+
+public class Abnormal extends Train
+{
+   public String [][] Apnormal = new String[20][202];
+   public String [][] train2 = new String[32][202];
+   
+   public double [] col= new double[201];
+    public double [] sum= new double[201];
+    public double [] mean = new double[201];
+    public double [] variance = new double[201];
+    public double arr2[]= new double [201];//sd
+    public double arr3[]= new double [201];//sd
+    public double SD[]= new double [201];
+    public String [][] test2 = new String[30][202];
+    public double [][] Dtest = new double[30][201];
+    public double [][] gussian = new double[30][201];
+    public int counter=-1;
+    public double P_Abnormal=0;
+    public double [] A_gussian = new double[30];
+    public double []Abnormal_X = new double[30];
+    public double multiply=1;
+     public dataset d = new Test();//poly
+    Test t=(Test)d;
+    public Abnormal()
+    {
+         dvide_data();//to make train set readable 
+        train2=train;
+        t.dvide_data();
+        test2=t.test;
+    }     
+     public void Abnormal()
+    
+    {
+        String str="Abnormal";
+      for(int i = 0; i < 32; i++)
+    {
+         if(train2[i][201].equals(str))
+          {
+              counter++;
+              for(int j = 0; j < 202; j++)
+        
+              Apnormal[counter][j]=train2[i][j]; 
+          }
+    }
+   }
+     //@Override
+     public void cal_mean ()
+    {
+     for(int i=0;i<201;i++)
+        {
+        int yourColumn  = i; //example of selected column (be careful columns start from 0)
+      for(String[] row: Apnormal)
+        {
+       col[yourColumn]=Double.parseDouble(row[yourColumn]);
+      
+       sum[i]=sum[i]+col[yourColumn];
+        }
+        }
+        for(int i=0;i<sum.length;i++)
+        {
+          mean[i]=sum[i]/Apnormal.length; 
+        }       
+    }
+   // @Override
+    public void calc_variance()
+    {
+       for(int i=0;i<SD.length;i++)
+       {
+          variance[i]=Math.pow(SD[i], 2);
+       }
+       
+    }
+    //@Override
+    public void Calc_Sd()
+    {
+        for(int i=0;i<201;i++)
+        {
+        int yourColumn  = i; //example of selected column (be careful columns start from 0)
+      for(String[] row: Apnormal)
+        {
+       col[yourColumn]=Double.parseDouble(row[yourColumn]);
+   
+      arr2[i]=col[yourColumn]-mean[yourColumn];
+      
+      arr3[i]+=arr2[i]*arr2[i];
+        }
+          SD[i]=Math.sqrt(arr3[i] / (Apnormal.length - 1));
+    }
+        
+    }
+    
+   //@Override
+     public void calc_gussian()
+    {
+       
+        for(int i=0;i<test2.length;i++)
+        {
+            for(int j=0;j<201;j++)
+            {
+                Dtest[i][j]=Double.parseDouble(test2[i][j]);
+            }
+        }
+        
+        for(int i=0;i<Dtest.length;i++)
+        {
+            for(int j=0;j<201;j++)
+            {
+              gussian[i][j]=Math.pow(Math.exp(-(((Dtest[i][j] - mean[j]) * (Dtest[i][j] - mean[j])) / ((2 * variance[j])))), 1 / (SD[j] * Math.sqrt(2 * Math.PI)));
+            }
+        }
+    }
+    // equation 3 PI
+     //@Override
+     public void calc_mult_gussian()
+   {
+       
+       for(int i=0;i<gussian.length;i++)
+       {
+           for(int j=0;j<201;j++)
+           {
+              multiply = gussian[i][j] * multiply;
+
+                A_gussian[i] = multiply;
+           }
+       }
+      /* for(int i=0;i<A_gussian.length;i++)
+          {
+              System.out.println(A_gussian[i]);
+          }*/
+   }
+    
+    
+    
+       public void ProbabilityOfAbnormal()
+       {
+           P_Abnormal=(((double)counter+1)/train2.length);
+           
+       }
+        
+     public void Calc_equation2()
+       {
+           for(int i=0;i<A_gussian.length;i++)
+           {
+               Abnormal_X[i]=A_gussian[i]*P_Abnormal;
+           }
+           
+         
+       }
+    //@Override
+     public void return_arr()
+            {
+                Abnormal();
+                cal_mean();
+                Calc_Sd();
+                calc_variance();
+                calc_gussian();
+                calc_mult_gussian();
+                ProbabilityOfAbnormal();
+                Calc_equation2();
+                //return Abnormal_X;
+            }
+       
+    
+   
+    }    
+

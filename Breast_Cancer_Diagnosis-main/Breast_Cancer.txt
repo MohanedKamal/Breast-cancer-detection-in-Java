@@ -1,0 +1,26 @@
+
+package colon.cancer;
+
+import java.io.IOException;
+
+public class ColonCancer {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws IOException
+    {
+     System.out.println("************* COLON CANCER DIAGNOSIS SYSTEM ! **************");
+     System.out.println("-------------------------------------------------------------------------------------------");
+     Knn n = new Knn();
+     System.out.println(" **** The Accuracy Of Nearest Neighbors - Classification ****");
+     n.calc();
+     System.out.println("---------------------------------------------------------------------------------------------");
+     System.out.println("********  The Accuracy Of Baysian_Classification   *************");
+        
+     Calculate_Bayes b = new Calculate_Bayes();
+     b.get_method();
+     
+    }
+    
+}

@@ -1,0 +1,62 @@
+
+package colon.cancer;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
+/**
+ *
+ * @author oem
+ */
+public abstract class dataset {
+    
+    public String[][] myArray= new String[62][202];     
+
+    public dataset() { 
+           
+        myArray=new String[63][203];
+        int row=0;
+        int col=0; 
+        String inputline="";
+       
+      
+        try
+        {
+            Scanner input = new Scanner(new BufferedReader(new FileReader("colonCancerDataset.csv")));
+            
+            while(input.hasNextLine())
+            {
+                inputline=input.nextLine();
+                
+                String[] array=inputline.split(",");
+                
+                for(int i=0;i<array.length;i++)
+                {
+                 myArray[row][i]=array[i];
+                 
+                }
+                row++;
+            }
+        }
+        catch(Exception e)
+                {
+                    System.out.println(e);
+                }
+      }
+   
+    
+    public abstract void dvide_data();
+   
+}
+
+
+
+

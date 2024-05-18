@@ -1,0 +1,178 @@
+
+package colon.cancer;
+
+import java.util.Vector;
+
+public class Normal extends Train
+{
+    public String [][] normal = new String[12][202];
+    public String [][] train2 = new String[32][202];
+    public double [] col= new double[201];
+    public double [] sum= new double[201];
+    public double [] mean = new double[201];
+    public double [] variance = new double[201];
+    public double arr2[]= new double [201];//sd
+    public double arr3[]= new double [201];//sd
+    public double SD[]= new double [201];
+    public dataset d = new Test();//poly
+    Test t=(Test)d; 
+    public String [][] test2 = new String[30][202];
+    public double [][] Dtest = new double[30][201];
+    public double [][] gussian = new double[30][201];
+    double P_Normal=0; // to calculate probabilty of normal
+    public static int counter=-1; // static counter
+    public double [] Mult_gussian = new double[30];
+    public double []Normal_X = new double[30];
+    protected  double multiply=1; // readable in this packge only
+    
+    public Normal()
+    
+    {
+        dvide_data();//to make train set readable 
+        train2=train;
+        t.dvide_data();
+        test2=t.test;
+        
+    }
+      public void Normal()
+    {
+        String str="Normal";
+      for(int i = 0; i < train2.length ; i++)
+    {
+         if(train2[i][201].equals(str))
+          {
+              counter++;
+              for(int j = 0; j < 202 ; j++)
+              normal[counter][j]=train2[i][j];
+              
+          }
+    }
+      
+    }  
+     // @Override
+    public void cal_mean ()
+    {
+     for(int i=0;i<201;i++)
+        {
+        int yourColumn  = i; //example of selected column (be careful columns start from 0)
+      for(String[] row: normal)
+        {
+       col[yourColumn]=Double.parseDouble(row[yourColumn]);
+      
+       sum[i]=sum[i]+col[yourColumn];
+        }
+        }
+        for(int i=0;i<sum.length;i++)
+        {
+          mean[i]=sum[i]/normal.length; 
+        }   
+    }
+    //@Override
+    public void calc_variance()
+    {   
+       for(int i=0;i<SD.length;i++)
+       {
+          variance[i]=Math.pow(SD[i], 2);
+       }
+    }
+    
+   // @Override
+    public void Calc_Sd()
+    {
+        for(int i=0;i<201;i++)
+        {
+        int yourColumn  = i; //example of selected column (be careful columns start from 0)
+      for(String[] row: normal)
+        {
+       col[yourColumn]=Double.parseDouble(row[yourColumn]);
+   
+      arr2[i]=col[yourColumn]-mean[yourColumn];
+      
+      arr3[i]+=arr2[i]*arr2[i];
+        }
+          SD[i]=Math.sqrt(arr3[i] / (normal.length - 1));
+    }
+        
+    }
+    //@Override
+    public void calc_gussian()
+    {
+        Vector v = new Vector();
+        for(int i=0;i<test2.length;i++)
+        {
+            for(int j=0;j<201;j++)
+            {
+                Dtest[i][j]=Double.parseDouble(test2[i][j]);
+            }
+        }
+        
+        for(int i=0;i<Dtest.length;i++)
+        {
+            for(int j=0;j<201;j++)
+            {
+              gussian[i][j]=Math.pow(Math.exp(-(((Dtest[i][j] - mean[j]) * (Dtest[i][j] - mean[j])) / ((2 * variance[j])))), 1 / (SD[j] * Math.sqrt(2 * Math.PI)));
+            }
+        }
+        /*for(int i=0;i<gussian.length;i++)
+        {
+            for(int j=0;j<201;j++)
+            {
+                System.out.println(gussian[i][j]);
+            }
+            }*/
+        
+    }
+    
+    //equation 2
+    //@Override
+    public void calc_mult_gussian()
+   {
+       for(int i=0;i<gussian.length;i++)
+       {
+           for(int j=0;j<201;j++)
+           {
+              multiply  = gussian[i][j] * multiply ;
+              
+
+                Mult_gussian[i] = multiply;
+           }
+          
+       }
+      /* for(int i=0;i<Mult_gussian.length;i++)
+          {
+              System.out.println(Mult_gussian[i]);
+          }*/ 
+       
+       
+   }
+    // equation 2
+       public void ProbabilityOfNormal()
+       {
+           P_Normal=(((double)counter+1)/train2.length);
+       }
+        
+       public void Calc_equation2()
+       {
+           for(int i=0;i<Mult_gussian.length;i++)
+           {
+               Normal_X[i]=Mult_gussian[i]*P_Normal;
+           }
+       }
+     
+       public void return_arr()
+       {
+                Normal();
+                cal_mean();
+                Calc_Sd();
+                calc_variance();
+                calc_gussian();
+                calc_mult_gussian();
+                ProbabilityOfNormal();
+                Calc_equation2();
+                //return Normal_X;
+       }
+    }
+    
+    
+
+    
